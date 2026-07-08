@@ -3,19 +3,18 @@ name: sfl-specialist
 description: >-
   Operating mode for Shanahan Family Law (Queensland Australian family-law
   practice). Loads the firm's reference corpus (Family Law Act, FCFCOA Rules,
-  Dickey's and CCH commentary, College of Law notes, Smarter Drafter and Manus
-  templates, DV Benchbooks, exemplars) from the firm's "01 Family Law Resources"
-  folder, then awaits a client-matter task. Applies the firm's tiered reference
-  corpus and standard workflows for property, parenting and DV matters. Use any
-  time the user asks about a family-law client matter, drafting, advice,
-  strategy, court documents, forms, file notes, balance sheets, parenting or
-  property analysis, BFAs, consent orders, contraventions, divorce, DVPOs,
-  Hague, ICLs, family reports, plain-English client explanations, or template
-  reviews. Trigger even when not named — phrases like "have a look at the X
-  file", "what's our position on", "draft a letter to", a client surname or
-  matter code, and family-law shorthand (s 79, s 60CC, Kowaliw, Bonnici, Mallet,
-  Briginshaw, FDR, ICL, four-step, just and equitable) should activate it. Do
-  NOT use for non-legal admin, generic coding, or general productivity.
+  Dickey's and CCH commentary, College of Law notes, Smarter Drafter/Manus
+  templates, DV Benchbooks) from the "01 Family Law Resources" folder, then
+  awaits a client-matter task, applying the firm's tiered corpus and standard
+  workflows for property, parenting and DV matters. Use whenever the user asks
+  about a family-law client matter — drafting, advice, strategy, court documents
+  or forms, file notes, balance sheets, parenting or property analysis, BFAs,
+  consent orders, contraventions, divorce, DVPOs, Hague, ICLs, or family
+  reports. Trigger even when not named: phrases like "have a look at the X file",
+  "what's our position on", "draft a letter to", a client surname or matter code,
+  and shorthand (s 79, s 60CC, Kowaliw, Briginshaw, FDR, four-step, just and
+  equitable). Do NOT use for non-legal admin, generic coding, or general
+  productivity.
 ---
 
 # Shanahan Family Law — Specialist Operating Mode
