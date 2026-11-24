@@ -16,6 +16,7 @@ import sys
 import threading
 import time
 import queue
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -33,6 +34,7 @@ OUTBOX = os.path.join(WORKSPACE, "outbox")
 # What Claude may do without asking. Anything not listed is refused in -p mode.
 ALLOWED_TOOLS = [
     "Bash(python3 /app/smokeball.py:*)",
+    "Bash(python3 /app/decisions_bot.py:*)",
     "Bash(ls:*)", "Bash(mkdir:*)", "Bash(cp:*)", "Bash(mv:*)", "Bash(pdftotext:*)",
     "Read", "Write", "Edit", "Glob", "Grep", "WebFetch", "WebSearch", "TodoWrite",
 ]
@@ -47,8 +49,20 @@ def log(*a):
 
 def tg(method, timeout=70, **params):
     data = urllib.parse.urlencode(params).encode()
-    with urllib.request.urlopen(f"{API}/{method}", data=data, timeout=timeout) as r:
-        return json.load(r)
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(f"{API}/{method}", data=data, timeout=timeout) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or attempt == 2:
+                raise
+            # Telegram flood control: retrying early extends the block, so wait as told.
+            try:
+                wait = int(json.loads(e.read()).get("parameters", {}).get("retry_after", 5))
+            except (ValueError, TypeError):
+                wait = 5
+            log(f"Telegram rate limit on {method}; waiting {wait}s")
+            time.sleep(wait + 1)
 
 
 def send(text):

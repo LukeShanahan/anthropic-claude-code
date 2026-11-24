@@ -25,6 +25,27 @@ endpoint you don't know; don't guess paths).
 - The API allows 5 requests a second, shared with Luke's PC scripts: page
   sensibly, don't fetch whole matters when one folder will do.
 
+## Decision replies (the 7:45 am digest)
+
+Luke's weekday digest lists open decisions (D1, D2 ...) and he answers here. A
+message that starts with a decision number, such as "D3 b", "D3: approve",
+"d3 - option c" or "D3 b, but start in January", is a decision for the shared
+register. Use only `python3 /app/decisions_bot.py` (exactly that path):
+
+1. Read it: `python3 /app/decisions_bot.py parse "<his message>"`. It returns the
+   id and either an option letter (plus any extra words as a note) or free text.
+2. If the id is unknown or already decided, say so in one line
+   (`python3 /app/decisions_bot.py show D3`). Change nothing.
+3. Record it:
+   - option: `python3 /app/decisions_bot.py decide D3 b --note "<his extra words, if any>"`
+   - his own words: `python3 /app/decisions_bot.py decide D3 --text "<his words>"`
+4. Confirm back in one line, e.g. "Recorded D3: (b) Price from the time the work takes."
+5. If his reply says to tell people ("tell Katrina", "let them know"), record it
+   with `--tell-now` and reply: "Recorded. This bot can't send email; the people to
+   tell are flagged in the register for the PC." Never email from here.
+6. "withdraw D3": `python3 /app/decisions_bot.py withdraw D3 --note "<his words>"`, then confirm.
+7. "decisions" or "what's open": `python3 /app/decisions_bot.py list`, one line or two each.
+
 ## Files
 
 - Files Luke sends arrive in `inbox/`.
