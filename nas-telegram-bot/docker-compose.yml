@@ -1,0 +1,15 @@
+services:
+  sfl-telegram-bot:
+    build: .
+    container_name: sfl-telegram-bot
+    restart: unless-stopped
+    env_file: secrets.env
+    environment:
+      SFL_WORKSPACE: /workspace
+      SFL_STATE_DIR: /state
+    volumes:
+      - ./workspace:/workspace     # Claude's working folder (instructions, inbox, outbox)
+      - ./state:/state             # conversation id, Smokeball token cache, audit log
+      - ./claude-home:/home/sfl/.claude   # Claude Code settings and session history
+    # No ports: the bot polls Telegram outbound only.
+    mem_limit: 2g

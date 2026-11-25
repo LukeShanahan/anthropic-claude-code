@@ -1,0 +1,6 @@
+secrets.env
+state/
+claude-home/
+workspace/inbox/
+workspace/outbox/
+__pycache__/

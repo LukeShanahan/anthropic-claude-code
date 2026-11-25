@@ -1,0 +1,25 @@
+# Portainer stack "sfl-telegram-bot" (paste into Portainer > Stacks > Add stack > Web editor).
+# No image build and no env_file: Portainer cannot read this folder, and plain-http apt is blocked on the
+# office network. start.sh reads secrets.env, installs Claude Code once, then runs bot.py as user sfl (1001).
+services:
+  sfl-telegram-bot:
+    image: node:22-bookworm
+    container_name: sfl-telegram-bot
+    restart: unless-stopped
+    network_mode: host               # as sfl-claude; nothing listens, outbound only
+    entrypoint: ["/bin/bash", "/opt/sfl/start.sh"]
+    environment:
+      SFL_WORKSPACE: /workspace
+      SFL_STATE_DIR: /state
+      TZ: Australia/Brisbane
+    volumes:
+      - /share/Docker/sfl-telegram-bot/start.sh:/opt/sfl/start.sh:ro
+      - /share/Docker/sfl-telegram-bot/app:/app:ro                 # bot.py, smokeball.py (read-only)
+      - /share/Docker/sfl-telegram-bot/secrets.env:/run/sfl/secrets.env
+      - /share/Docker/sfl-telegram-bot/workspace:/workspace        # instructions, inbox, outbox
+      - /share/Docker/sfl-telegram-bot/state:/state                # session id, token cache, audit log
+      - /share/Docker/sfl-telegram-bot/home:/home/sfl              # Claude Code install and settings
+      # Shared routing folder (decision register "D3 b" replies), used only through /app/decisions_bot.py
+      - /share/Docker/sfl-claude/home/.claude/aios/routing:/routing-home/.claude/aios/routing
+    # No ports: the bot polls Telegram outbound only.
+    mem_limit: 2g
